@@ -11,3 +11,53 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  userName String @unique @map("user_name")
+  password String @map("password")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  sessions Session[]
+  interviewSessions InterviewSession[]
+  evaluations Evaluation[]
+}
+
+model Session{
+  id Int @id @default(autoincrement())
+  userId Int @map("user_id")
+  refreshToken String @map("refresh_token")
+  revoked Boolean @default(false) @map("revoked")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User  @relation(fields:[userId], references: [id], onDelete: Cascade)
+}
+
+model InterviewSession{
+  id Int @id @default(autoincrement())
+  userId Int @map("user_id")
+  jobTitle String @map("job_title")
+  skills String[]
+  difficulty String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Evaluation{
+  id Int @id @default(autoincrement())
+  userId Int @map("user_id")
+  interviewSessionId Int @map("interview_session_id")
+  question String
+  answer String
+  aiResponse Json @map("ai_response")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interviewSession InterviewSession @relation(fields: [interviewSessionId], references: [id], onDelete: Cascade)
+}

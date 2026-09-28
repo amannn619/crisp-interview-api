@@ -13,14 +13,21 @@ export function getRefreshToken(payload, expiry = "7d") {
 }
 
 export function verifyAccessToken(token) {
-    try {
+    const result = { valid: false, expired: false, payload: null };
+    try{
         const decoded = jwt.verify(token, ACCESS_SECRET);
-        return decoded;
+        result.valid = true;
+        result.payload = decoded;
     }
-    catch (err) {
-        return null;
+    catch (error) {
+        if (error.name == 'TokenExpiredError') {
+            result.expired = true;
+            result.payload = jwt.decode(token);
+        }
     }
+    return result;
 }
+
 
 export function verifyRefreshToken(token) {
     try {

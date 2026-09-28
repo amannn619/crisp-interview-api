@@ -7,7 +7,7 @@ export async function register(req, res) {
     return new ApiResponse(res, { accessToken, user }, null, 201, [{ name: "refresh_token", value: refreshToken }]);
 }
 
-export async function login() {
+export async function login(req, res) {
     const { userName, password } = req.body;
     const { user, accessToken, refreshToken } = await authService.login(userName, password);
     return new ApiResponse(res, { accessToken, user }, null, 200, [{ name: "refresh_token", value: refreshToken }]);

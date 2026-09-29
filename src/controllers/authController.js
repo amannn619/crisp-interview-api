@@ -13,14 +13,27 @@ export async function login(req, res) {
     return new ApiResponse(res, { accessToken, user }, null, 200, [{ name: "refresh_token", value: refreshToken }]);
 }
 
-export function logout() {
-    
+export async function logout(req, res, next) {
+    try {
+        const refreshToken = req.cookies.refresh_token;
+        await authService.logout(req.id, refreshToken);
+        return new ApiResponse(res, null, "Logged out", 200, [], true);
+    }
+    catch (error) {
+        error.clearCookie = true;
+        next(error);
+    }
 }
 
-export function refresh() {
-    
+export async function refresh(req, res) {
+    const refreshToken = req.cookies.refresh_token;
+
+    const { accessToken, newRefreshToken } = await authService.refresh(refreshToken);
+    return new ApiResponse(res, {accessToken}, null, 201, [{name: "refresh_token", value: newRefreshToken}])
 }
 
-export function reload() {
-    
+export async function reload(req, res) {
+    const refreshToken = req.cookies.refresh_token;
+    const accessToken = await authService.reload(refreshToken);
+    return new ApiResponse(res, {accessToken}, null, 201)
 }

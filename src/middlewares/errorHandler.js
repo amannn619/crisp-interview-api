@@ -27,6 +27,10 @@ export default function errorHandler(err, req, res, next) {
         }
     }
 
+    if (err.clearCookie) {
+        res.clearCookie('refresh_token', {path: "/"});
+    }
+
     return res.status(errorStatusCode).json({
         status: "error",
         message: errorMessage,

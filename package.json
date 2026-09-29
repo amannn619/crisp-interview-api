@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.3",
     "nodemon": "^3.1.14",
     "pg": "^8.23.0",
+    "repomix": "^1.18.1",
     "swagger-autogen": "^2.23.7",
     "swagger-ui": "^5.33.0",
     "swagger-ui-express": "^5.0.1",

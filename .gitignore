@@ -6,3 +6,5 @@ node_modules
 /.agents
 /.claude
 /.windsurf
+
+repomix-output.xml

@@ -11,12 +11,12 @@ const cookieOptions = {
 }
 export default class ApiResponse{
     constructor(res, data = null, message = null, status = 200, cookies = [], clearCookie = false) {
-        cookieData.forEach(cookie => {
+        cookies.forEach(cookie => {
             res.cookie(cookie.name, cookie.value, cookieOptions)
         })
 
         if (clearCookie) {
-            res.clearCookie();
+            res.clearCookie('refresh_token', cookieOptions);
         }
 
         res.status(status).json({

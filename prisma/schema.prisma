@@ -29,7 +29,7 @@ model User{
 model Session{
   id Int @id @default(autoincrement())
   userId Int @map("user_id")
-  refreshToken String @map("refresh_token")
+  refreshToken String @unique @map("refresh_token")
   revoked Boolean @default(false) @map("revoked")
   expiresAt DateTime @map("expires_at")
   createdAt DateTime @default(now()) @map("created_at")
